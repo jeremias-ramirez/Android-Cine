@@ -1,15 +1,32 @@
 package com.example.cine;
 
 import android.app.Activity;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.drawable.RoundedBitmapDrawable;
+import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory;
 
+import android.provider.MediaStore;
+import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.FutureTarget;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.io.File;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by tecprog_fich on 14/09/17.
@@ -28,16 +45,15 @@ public class SegundaPantalla extends AppCompatActivity {
         Long itemId= this.getIntent().getLongExtra("itemId", 0);
         Cartelera p = peldbh.getPelicula(itemId);
 
-        LinearLayout backgroud = (LinearLayout)findViewById(R.id.background);
         TextView nombrePelicula = (TextView)findViewById(R.id.nombrePelicula);
         TextView anioPelicula = (TextView)findViewById(R.id.anioPelicula);
-        ImageView logo = (ImageView)findViewById(R.id.logo);
+        ImageView background = (ImageView)findViewById(R.id.background);
         WebView urlTrailer = (WebView)findViewById(R.id.urlTrailer);
 
-        backgroud.setBackgroundResource(p.getLogo());
         nombrePelicula.setText(p.getNombrePelicula());
         anioPelicula.setText(p.getAnioPelicula());
-        logo.setImageResource(p.getLogo());
+
+        Picasso.get().load(p.getUriImg()).into(background);
 
         urlTrailer.setWebViewClient(new WebViewClient(){
             @Override
@@ -47,8 +63,18 @@ public class SegundaPantalla extends AppCompatActivity {
         });
         urlTrailer.getSettings().setJavaScriptEnabled(true);
         urlTrailer.loadUrl(p.getUrlTrailer());
+    }
 
-
+    private String getRealPathFromURI(Uri contentURI) {
+        Cursor cursor = getContentResolver().query(contentURI,
+                null, null, null, null);
+        if (cursor == null) { // Source is Dropbox or other similar local file path
+            return contentURI.getPath();
+        } else {
+            cursor.moveToFirst();
+            int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(idx);
+        }
     }
 
 }

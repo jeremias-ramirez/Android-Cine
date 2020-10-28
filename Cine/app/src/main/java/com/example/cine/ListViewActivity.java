@@ -26,7 +26,6 @@ import java.util.function.Consumer;
  */
 
 public class ListViewActivity extends AppCompatActivity{
-    private static boolean savePeliculasEstate = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,20 +33,6 @@ public class ListViewActivity extends AppCompatActivity{
         setContentView(R.layout.list_view_main);
         PeliculasSQLiteHelper peldbh = new PeliculasSQLiteHelper(this, PeliculasSQLiteHelper.DATABASE_NAME,
                 null, PeliculasSQLiteHelper.DATABASE_VERSION);
-        if(!savePeliculasEstate){
-            ArrayList<Cartelera> listaPeliculas = new ArrayList<Cartelera>();
-            Cartelera p = new Cartelera("Batman", "1989", R.drawable.batman);
-            p.setUrlTrailer("https://www.youtube.com/watch?v=ftNOhfNjXjk");
-            listaPeliculas.add(p);
-            p = new Cartelera("Superman", "1978", R.drawable.superman);
-            p.setUrlTrailer("https://www.youtube.com/watch?v=q-v1RyLNWU8");
-            listaPeliculas.add(p);
-            p = new Cartelera("It", "1990", R.drawable.it);
-            p.setUrlTrailer("https://www.youtube.com/watch?v=8i3_2iGTQi8");
-            listaPeliculas.add(p);
-            peldbh.saveListPeliculas(listaPeliculas);
-            savePeliculasEstate = true;
-        }
 
         ArrayList<Cartelera> listaPeliculas = peldbh.getAllPeliculas();
 
@@ -69,6 +54,7 @@ public class ListViewActivity extends AppCompatActivity{
 
             }
         });
+
 
 
     }

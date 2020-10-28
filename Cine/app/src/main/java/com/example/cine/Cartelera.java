@@ -7,14 +7,13 @@ package com.example.cine;
 public class Cartelera {
     private String nombrePelicula;
     private String anioPelicula;
-    private int logo;
+    private String uriImg;
     private long id;
     private String urlTrailer;
 
-    public Cartelera (String nombrePelicula, String anioPelicula, int logo) {
+    public Cartelera (String nombrePelicula, String anioPelicula) {
         this.nombrePelicula = nombrePelicula;
         this.anioPelicula = anioPelicula;
-        this.logo = logo;
     }
 
     public String getNombrePelicula() {
@@ -33,12 +32,12 @@ public class Cartelera {
         this.anioPelicula = anioPelicula;
     }
 
-    public int getLogo() {
-        return logo;
+    public String getUriImg() {
+        return uriImg;
     }
 
-    public void setLogo(int logo) {
-        this.logo = logo;
+    public void setUriImg(String uriImg) {
+        this.uriImg = uriImg;
     }
 
     public long getId(){
